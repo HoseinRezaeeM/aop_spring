@@ -80,15 +80,15 @@ public class LoggingAspect {
         System.out.println("In Aspect");  
     }  
 }
-Linking this to the definitions we introduced up top we notice the @Aspect annotation which marks the LoggingAspect class as a source for @Pointcut and Advice (@Before). Note as well that we annotated the class as a @Component to allow Spring to manage this class as a Bean.
+// Linking this to the definitions we introduced up top we notice the @Aspect annotation which marks the LoggingAspect class as a source for @Pointcut and Advice (@Before). Note as well that we annotated the class as a @Component to allow Spring to manage this class as a Bean.
 
-Moreover, we used the expression @Pointcut("@annotation(Log)") to describe which potential methods (JoinPoints) are affected by the corresponding Advice method. In this case, we want to add the advice to all methods that are annotated with our @Log annotation.
+// Moreover, we used the expression @Pointcut("@annotation(Log)") to describe which potential methods (JoinPoints) are affected by the corresponding Advice method. In this case, we want to add the advice to all methods that are annotated with our @Log annotation.
 
-This brings us to @Before("logPointcut()") that executes the annotated method logAllMethodCallsAdvice before the execution of any method annotated with @Log.
+// This brings us to @Before("logPointcut()") that executes the annotated method logAllMethodCallsAdvice before the execution of any method annotated with @Log.
 
-Now, let’s create a Spring Service that will use the aspect we defined:
+// Now, let’s create a Spring Service that will use the aspect we defined:
 
-import org.springframework.stereotype.Service;
+// import org.springframework.stereotype.Service;
 
 @Service  
 public class ShipmentService {  
@@ -114,22 +114,22 @@ class AopApplicationTests {
          shipmentService.shipStuff();  
      }  	  
 }
-This will spin up a Spring context and load the LoggingAspect and the ShipmentService. Next, in the test method, we call the shipStuff() method which was annotated by @Log.
+// This will spin up a Spring context and load the LoggingAspect and the ShipmentService. Next, in the test method, we call the shipStuff() method which was annotated by @Log.
 
-If we check the console we should see
+// If we check the console we should see
 
-In Aspect
-In Service
-This means that the logAllMethodCallsAdvice method was indeed executed before the shipStuff() method.
+// In Aspect
+// In Service
+// This means that the logAllMethodCallsAdvice method was indeed executed before the shipStuff() method.
 
-Deeper Look Into Spring AOP’s Annotations
-Let’s explore the full range of capabilities offered by Spring’s AOP annotations.
+// Deeper Look Into Spring AOP’s Annotations
+// Let’s explore the full range of capabilities offered by Spring’s AOP annotations.
 
-Pointcut
-Pointcut expressions start with a Pointcut Designator (PCD), which specifies what methods to be targeted by our Advice.
+// Pointcut
+// Pointcut expressions start with a Pointcut Designator (PCD), which specifies what methods to be targeted by our Advice.
 
-execution
-This is used to match a joinPoint method’s signature.
+// execution
+// This is used to match a joinPoint method’s signature.
 
 @Component  
 @Aspect  
@@ -138,9 +138,9 @@ public class LoggingAspect {
     @Pointcut("execution(public void io.reflectoring.springboot.aop.ShipmentService.shipStuffWithBill())")  
     public void logPointcutWithExecution(){}  
 }
-The above Pointcut will match the method named shipStuffWithBill with the signature public void that lives in the class io.reflectoring.springboot.aop.ShipmentService.
+// The above Pointcut will match the method named shipStuffWithBill with the signature public void that lives in the class io.reflectoring.springboot.aop.ShipmentService.
 
-Now, let’s add Advice matching the above Pointcut
+// Now, let’s add Advice matching the above Pointcut
 
 @Component  
 @Aspect  
@@ -217,15 +217,15 @@ class AopApplicationTests {
 	 billingService.createBill();  
    }
 }
-This will give us
+// This will give us
 
-In Aspect from within
-Bill created
-Note that we can also use Wildcards to be more flexible. For example, let’s write an expression to match all methods in the package io.reflectoring.springboot.aop
+// In Aspect from within
+// Bill created
+// Note that we can also use Wildcards to be more flexible. For example, let’s write an expression to match all methods in the package io.reflectoring.springboot.aop
 
-within(io.reflectoring.springboot.aop.*)
-args
-This is used to match arguments of JointPoint methods.
+// within(io.reflectoring.springboot.aop.*)
+// args
+// This is used to match arguments of JointPoint methods.
 
 @Component  
 @Aspect  
@@ -300,14 +300,14 @@ class AopApplicationTests {
      }
      ...
 }
-Which should output
+// Which should output
 
-In Aspect
-In Service
-Combining PointCut Expressions
-We can combine more than a single PointCut expression using logical operators, which are && (and), || (or) and ! (not) operators.
+// In Aspect
+// In Service
+// Combining PointCut Expressions
+// We can combine more than a single PointCut expression using logical operators, which are && (and), || (or) and ! (not) operators.
 
-Say we have an OrderService.
+// Say we have an OrderService.
 
 @Service  
 public class OrderService {  
@@ -319,8 +319,8 @@ public class OrderService {
     public void cancelStuff() {  
         System.out.println("Canceling stuff");  
     }  
-}
-Now, let’s write a PointCut that matches all the methods in OrderService and that has a return type of String.
+// }
+// Now, let’s write a PointCut that matches all the methods in OrderService and that has a return type of String.
 
 @Component  
 @Aspect  
@@ -389,14 +389,14 @@ class AopApplicationTests {
         shipmentService.shipStuff();
     }
 }
-Will print out
+// Will print out
 
-In Aspect at shipStuff
-In Service
-@After
-This advice is run after the method finishes running, this could be by normally returning or by throwing an exception.
+// In Aspect at shipStuff
+// In Service
+// @After
+// This advice is run after the method finishes running, this could be by normally returning or by throwing an exception.
 
-Let’s introduce a new annotation
+// Let’s introduce a new annotation
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
@@ -433,20 +433,20 @@ class AopApplicationTests {
         orderService.checkStuff();
     }
 }
-This should output
+// This should output
 
-Checking stuff
-In After Aspect at checkStuff
-@AfterReturning
-This is similar to @After but it’s run only after a normal execution of the method.
+// Checking stuff
+// In After Aspect at checkStuff
+// @AfterReturning
+// This is similar to @After but it’s run only after a normal execution of the method.
 
-@AfterThrowing
-This is similar to @After but it’s run only after an exception is thrown while executing the method.
+// @AfterThrowing
+// This is similar to @After but it’s run only after an exception is thrown while executing the method.
 
-@Around
-This annotation allows us to take actions either before or after a JoinPoint method is run. We can use it to return a custom value or throw an exception or simply let the method run and return normally.
+// @Around
+// This annotation allows us to take actions either before or after a JoinPoint method is run. We can use it to return a custom value or throw an exception or simply let the method run and return normally.
 
-Let’s start by defining a new ValidationService
+// Let’s start by defining a new ValidationService
 
 @Service
 public class ValidationService {
@@ -472,7 +472,7 @@ public class ValidationAspect {
             joinPoint.proceed();
     }
 }
-The above Pointcut expression will capture all methods that are in the class ValidationService. Then, the aroundAdvice() advice will check the first argument of the method if it’s negative it will throw an exception, otherwise it will allow the method to execute and return normally.
+//The above Pointcut expression will capture all methods that are in the class ValidationService. Then, the aroundAdvice() advice will check the first argument of the method if it’s negative it will throw an exception, otherwise it will allow the method to execute and return normally.
 
 @SpringBootTest
 class AopApplicationTests {
@@ -485,11 +485,11 @@ class AopApplicationTests {
         validationService.validateNumber(10);
     }
 }
-This will print out
+// This will print out
 
-In Around Aspect
-10 is valid
-And now let’s try a case where we will get an exception.
+// In Around Aspect
+// 10 is valid
+// And now let’s try a case where we will get an exception.
 
 @SpringBootTest
 class AopApplicationTests {
@@ -502,9 +502,9 @@ class AopApplicationTests {
         validationService.validateNumber(-4);
     }
 }
-This should output
+// This should output
 
-In Around Aspect
+// In Around Aspect
 
-java.lang.RuntimeException: Argument should not be negative
-...
+// java.lang.RuntimeException: Argument should not be negative
+// ...
